@@ -1,10 +1,11 @@
+//@ts-nocheck
 'use client'
 
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Coins, Leaf, Search, Bell, ChevronDown, LogIn, LogOut } from "lucide-react";
+import { Menu, Coins, Droplets, Search, Bell, ChevronDown, LogIn, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
@@ -51,7 +52,7 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
     const [notifications, setNotifications] = useState<any>(null);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [userInfo, setUserInfo] = useState<any>(null);
-    const [balance, setBalance] = useState<number | null>(null);
+    const [balance, setBalance] = useState<number | null>(0);
     const isMobile = useMediaQuery("(max-width: 768px)");
 
     useEffect(() => {
@@ -201,19 +202,19 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
                         <Menu className="h-6 w-6 text-slate-700" />
                     </Button>
                     <Link href="/" className="flex items-center">
-                        <Leaf className="h-6 w-6 md:h-8 md:w-8 text-green-500 mr-2 md:mr-4" />
+                        <Droplets className="h-6 w-6 md:h-8 md:w-8 text-green-500 mr-2 md:mr-4" />
                         <span className="font-bold text-base md:text-lg text-slate-700">WasteChain</span>
                     </Link>
                 </div>
                 {!isMobile && (
-                    <div className="flex-1 max-w-4xl flex justify-center items-center">
+                    <div className="flex-1 max-w-xl mx-4">
                         <div className="relative">
                             <input 
                                 type="text" 
                                 placeholder="Search..." 
-                                className="w-full md:w-1/2 lg:w-1/3 pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
-                            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+                            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                         </div>
                     </div>
                 )}
@@ -232,10 +233,58 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
                                 )}
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent align="end" className="w-64">
                             <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            { notifications && notifications.length > 0 ? (
+                                notifications.map((notification: any) => (
+                                    <DropdownMenuItem key={notification.id} onClick={() => handleNotificationClick(notification.id)}>
+                                        <div className="flex flex-col">
+                                            <span className="font-medium">{notification.type}</span>
+                                            <span className="text-sm text-gray-500">{notification.message}</span>
+                                        </div>
+                                    </DropdownMenuItem>
+                                ))
+                            ) : (
+                                <DropdownMenuItem>
+                                    <span>No new notifications</span>
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
+                        <div className="mr-2 flex items-center bg-gray-100 rounded-full px-2 md:px-3 py-1">
+                            <Coins className="h-4 w-4 md:h-5 md:w-5 mr-1 text-green-500" />
+                            <span className="text-sm font-semibold md:text-base text-gray-800">{balance?.toFixed(2)}</span>
+                        </div>
+                        {!isLoggedIn ? (
+                            <Button onClick={login} className="ml-2 md:ml-4 bg-green-600 hover:bg-green-700 text-white">
+                                Login
+                                <LogIn className="h-4 w-4 ml-1 md:ml-2 md:h-6 md:w-6" />
+                            </Button>
+                        ):(
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="flex item-center mr-2 md:mr-4">
+                                        <User className="h-6 w-6 text-slate-700 mr-1" />
+                                        <ChevronDown className="h-4 w-4 ml-1 text-slate-700" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-64">
+                                    <DropdownMenuItem onClick={getUserInfo}>
+                                        {userInfo?.name ? (
+                                            <span>{userInfo.name}</span>
+                                        ) : (
+                                            <span>Profile</span>
+                                        )}
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Link href="/settings">Settings</Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={logout}>
+                                        <span>Logout</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
                     </DropdownMenu>
                 </div>
             </div>
