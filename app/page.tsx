@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Recycle, Users, Coins, MapPin, ChevronRight } from "lucide-react";
+import { ArrowRight, Leaf, Droplets, Recycle, Users, Coins, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -28,10 +28,21 @@ export default function Home() {
         </p>
         <Button className="bg-green-600 hover:bg-green-700 text-lg text-white px-10 py-6 rounded-full">Report Waste</Button>
       </section>
-      <section className="grid md:grid-cols-3 gap-10 mb-2">
+      <section className="grid md:grid-cols-3 gap-10 mb-20">
         <FeatureCard title="Report Waste" description="Report waste to the recycling facility" icon={Recycle} />
         <FeatureCard title="Get Rewards" description="Get rewards for recycling waste" icon={Coins} />
         <FeatureCard title="Connect with Recyclers" description="Connect with recyclers in your area" icon={Users} />
+      </section>
+      <section className="bg-white p-10 rounded-3xl shadow-lg mb-20">
+        <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
+          Our Impact
+        </h2>
+        <div className="grid grid-cols-4 gap-6">
+          <ImpactCard title="Waste Collected" value="10 Kg" icon={Recycle} />
+          <ImpactCard title="Report Submissions" value="100" icon={MapPin} />
+          <ImpactCard title="Tokens Earned" value="100" icon={Coins} />
+          <ImpactCard title="CO2 Offset" value="100 Kg" icon={Leaf} />
+        </div>
       </section>
     </div>
   );
@@ -45,6 +56,18 @@ function FeatureCard({ title, description, icon:Icon }: { title: string, descrip
       </div>
       <h3 className="text-xl font-semi-bold mb-4 text-slate-800">{title}</h3>
       <p className="text-slate-600 leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function ImpactCard({ title, value, icon:Icon }: { title: string, value: string, icon: React.ElementType }) {
+  return (
+    <div className="bg-gray-50 p-8 border border-gray-100 rounded-xl hover:shadow-md transition-all duration-300 ease-in-out flex flex-col items-center text-center">
+      <div className="text-green-100 p-4 rounded-full mb-6">
+        <Icon className="w-8 h-8 text-green-500" />
+      </div>
+      <h3 className="text-xl font-semi-bold mb-4 text-slate-800">{value}</h3>
+      <p className="text-slate-600 leading-relaxed">{title}</p>
     </div>
   );
 }
