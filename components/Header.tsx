@@ -203,7 +203,7 @@ export default function Header({ onMenuClick, totalEarnings }: HeaderProps) {
                     </Button>
                     <Link href="/" className="flex items-center">
                         <Droplets className="h-6 w-6 md:h-8 md:w-8 text-green-500 mr-2 md:mr-4" />
-                        <span className="font-bold text-base md:text-lg text-slate-700">WasteChain</span>
+                        <span className="font-bold text-base md:text-lg text-slate-700">EcoChain</span>
                     </Link>
                 </div>
                 {!isMobile && (
