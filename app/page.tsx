@@ -66,8 +66,8 @@ function ImpactCard({ title, value, icon:Icon }: { title: string, value: string,
       <div className="text-green-100 p-4 rounded-full mb-6">
         <Icon className="w-8 h-8 text-green-500" />
       </div>
-      <h3 className="text-xl font-semi-bold mb-4 text-slate-800">{value}</h3>
-      <p className="text-slate-600 leading-relaxed">{title}</p>
+      <h3 className="text-3xl font-bold mb-2 text-slate-800">{value}</h3>
+      <p className="text-slate-600 text-sm">{title}</p>
     </div>
   );
 }
